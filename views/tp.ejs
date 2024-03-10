@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Data - <%= tableName %></title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Table Data - <%= tableName %></h1>
+    <a href="/">Back to Home</a>
+    <!-- Button trigger modal for adding new record -->
+    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal">
+      Add New Record
+    </button>
+
+    <% if (data.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <% Object.keys(data[0]).forEach(key => { %>
+                <th><%= key %></th>
+              <% }); %>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% data.forEach(row => { %>
+              <tr>
+                <% Object.values(row).forEach(value => { %>
+                  <td><%= value %></td>
+                <% }); %>
+                <td>
+                  <!-- Button trigger modal for updating record -->
+                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal<%= row.EMAIL %>">
+                    Edit
+                  </button>
+                  <!-- Button for deleting record -->
+                  <a href="/<%= tableName %>/delete/<%= row.EMAIL %>" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p><%= tableName %> has no records</p>
+    <% } %>
+  </div>
+
+  <!-- Add New Record Modal -->
+  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <!-- Modal content for adding new record -->
+    <!-- You can add your form for adding new records here -->
+  </div>
+
+  <!-- Edit Record Modal -->
+  <% data.forEach(row => { %>
+    <div class="modal fade" id="editModal<%= row.EMAIL %>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+      <!-- Modal content for editing record -->
+      <!-- You can add your form for editing records here -->
+    </div>
+  <% }); %>
+
+  <!-- Include Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
