@@ -36,6 +36,7 @@ router.get('/', (req, res) => {
     });
   });
   
+  
   // Route to handle form submission for creating a new entry
   router.post('/:tableName/create', (req, res) => {
     const tableName = req.params.tableName;
@@ -87,6 +88,10 @@ router.get('/', (req, res) => {
       res.redirect(`/${tableName}`);
     });
   });
+
+
+
+  
   
 
 module.exports = router;

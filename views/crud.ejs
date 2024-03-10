@@ -6,6 +6,21 @@
   <title>Table Data - <%= tableName %></title>
   <!-- Include Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Set fixed height and make tbody scrollable */
+    .table-responsive {
+      overflow-y: auto;
+      max-height: 750px; /* Adjust height as needed */
+    }
+
+    /* Set fixed table header */
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: #f8f9fa;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
