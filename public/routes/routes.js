@@ -32,7 +32,8 @@ router.get('/', (req, res) => {
         res.status(500).send('Error fetching data');
         return;
       }
-      res.render('crud', { data: results, tableName });
+      let count=results.length
+      res.render('crud', { data: results, tableName, count  });
     });
   });
   

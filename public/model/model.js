@@ -38,7 +38,7 @@ const Employer = sequelize.define('Employer', {
   }
 }, {
   tableName: 'data',
-  timestamps: true
+  timestamps: false
 });
 
 
@@ -71,8 +71,8 @@ const Etudiant = sequelize.define('Etudiant', {
     allowNull: true
   },
 }, {
-  tableName: 'esc',
-  timestamps: true
+  tableName: 'FSEG',
+  timestamps: false
 });
 
 // Function to get all tables and their structures
