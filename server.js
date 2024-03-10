@@ -58,7 +58,7 @@ app.get('/:tableName', (req, res) => {
       res.status(500).send('Error fetching data');
       return;
     }
-    res.render('tp', { data: results, tableName });
+    res.render('crud', { data: results, tableName });
   });
 });
 
