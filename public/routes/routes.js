@@ -2,7 +2,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connection = require('../model/dbConfig');
-
 const router = express.Router();
 
 // Use bodyParser middleware to parse request bodies
@@ -39,14 +38,21 @@ router.get('/', (req, res) => {
   
   
   // Route to handle form submission for creating a new entry
-  router.post('/:tableName/create', (req, res) => {
+  router.post('/:tableName/add', (req, res) => {
     const tableName = req.params.tableName;
-    const email = req.body.email;
-    // Assuming other fields are passed in the request body
-    const otherFields = req.body.otherFields;
+    const { EMAIL, ...otherFields } = req.body;
+  
+    // Extract column names from the request body keys
+    const columns = Object.keys(otherFields);
+  
+    // Construct the SQL query dynamically
+    const sql = `INSERT INTO ${tableName} (EMAIL, ${columns.join(', ')}) VALUES (?, ${Array(columns.length).fill('?').join(', ')})`;
+  
+    // Extract values from otherFields
+    const values = [EMAIL, ...columns.map(column => otherFields[column])];
   
     // Insert new entry into the table
-    connection.query(`INSERT INTO ${tableName} (EMAIL, other_column1, other_column2) VALUES (?, ?)`, [email, otherFields], (err, result) => {
+    connection.query(sql, values, (err, result) => {
       if (err) {
         console.error(`Error inserting data into table ${tableName}:`, err);
         res.status(500).send('Error creating entry');
@@ -56,23 +62,33 @@ router.get('/', (req, res) => {
     });
   });
   
+
   // Route to handle form submission for updating an existing entry
   router.post('/:tableName/update/:email', (req, res) => {
     const tableName = req.params.tableName;
     const email = req.params.email;
-    // Assuming other fields are passed in the request body
-    const otherFields = req.body.otherFields;
-  
-    // Update entry in the table
-    connection.query(`UPDATE ${tableName} SET other_column1=?, other_column2=? WHERE EMAIL=?`, [otherFields, email], (err, result) => {
-      if (err) {
-        console.error(`Error updating data in table ${tableName}:`, err);
-        res.status(500).send('Error updating entry');
-        return;
-      }
-      res.redirect(`/${tableName}`);
+    const { EMAIL, ...otherFields } = req.body;
+
+    // Extract column names from the request body keys
+    const columns = Object.keys(otherFields);
+
+    // Construct the SQL query dynamically
+    const sql = `UPDATE ${tableName} SET ${columns.map(column => `${column} = ?`).join(', ')} WHERE EMAIL = ?`;
+
+    // Extract values from otherFields
+    const values = [...columns.map(column => otherFields[column]), email];
+
+    // Update the entry in the table
+    connection.query(sql, values, (err, result) => {
+        if (err) {
+            console.error(`Error updating data in table ${tableName}:`, err);
+            res.status(500).send('Error updating entry');
+            return;
+        }
+        res.redirect(`/${tableName}`);
     });
-  });
+});
+
   
   // Route to handle deleting an entry
   router.get('/:tableName/delete/:email', (req, res) => {
