@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Data</title>
+  <title>Gestion des Tables</title>
   <!-- Include Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <h1>Select a Table</h1>
-    <select id="tableName" class="form-control">
+    <select id="tableName" class="form-control" style="width: 150px;">
       <option value="">Select a table</option> <!-- Empty option added -->
       <% tables.forEach(table => { %>
         <!-- Make sure to reference the correct property -->
