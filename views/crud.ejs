@@ -14,8 +14,8 @@
 </head>
 <body>
   <div class="container">
-    <h1>Table Data - <%= tableName.toUpperCase() %> <strong style="color:rgb(105, 0, 132) ;">  (<%= count %>)</strong></h1>
-    <a href="/">Back to Home</a>
+    <h1>Les Données -[ <%= tableName.toUpperCase() %>] <strong style="color:rgb(105, 0, 132) ;">  (<%= count %>)</strong></h1>
+    <a href="/gestion">Back to Home</a>
     <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addModal">
       <i class="fas fa-plus"></i> Add New <%= tableName %>
     </button>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                      <a href="/<%= tableName %>/delete/<%= row.EMAIL %>" class="btn btn-danger">Delete</a>
+                      <a href="/gestion/<%= tableName %>/delete/<%= row.EMAIL %>" class="btn btn-danger">Delete</a>
                     </div>
                   </div>
                 </div>

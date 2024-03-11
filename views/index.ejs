@@ -32,8 +32,8 @@
       // Check if the selectedTableName is not empty
       if (selectedTableName.trim() !== '') {
         // Update the URL with the selected table name
-        history.pushState(null, null, `/${selectedTableName}`);
-        window.location.href = `/${selectedTableName}`;
+        history.pushState(null, null, `/gestion/${selectedTableName}`);
+        window.location.href = `/gestion/${selectedTableName}`;
         location.replace(window.location.href);
         fetch(`/data/${selectedTableName}`)
           .then(response => response.json())

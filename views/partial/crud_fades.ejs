@@ -11,7 +11,7 @@
         <div class="modal-body">
           <!-- Form for adding new record -->
           <!-- Form for adding new record -->
-  <form action="/<%= tableName %>/add" method="POST">
+  <form action="/gestion/<%= tableName %>/add" method="POST">
     <% if (data.length > 0) { %>
       <% Object.keys(data[0]).forEach(key => { %>
         <div class="form-group">
@@ -42,7 +42,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="/<%= tableName %>/update/<%= row.EMAIL %>" method="POST">  <% Object.keys(data[0]).forEach(key => { %>
+            <form action="/gestion/<%= tableName %>/update/<%= row.EMAIL %>" method="POST">  <% Object.keys(data[0]).forEach(key => { %>
                 <div class="form-group">
                   <label for="<%= key %>"><%= key %></label>
                   <input type="text" class="form-control" id="<%= key %>" name="<%= key %>" value="<%= row[key] %>">  </div>
