@@ -41,7 +41,7 @@ router.get('/upload', (req, res) => {
         });
 });
 
-router.post('/uploads', upload.single('file'), async (req, res) => {
+router.post('/upload', upload.single('file'), async (req, res) => {
     const file = req.file;
     if (!file) {
         return res.status(400).send('No file uploaded.');

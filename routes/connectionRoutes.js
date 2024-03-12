@@ -3,10 +3,10 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 
 router.get('/login', (req, res) => {
-    res.render('../public/connection/login', { title: 'Login' });
+    res.render('../connection/login', { title: 'Login' });
   });
   router.get('/register', (req, res) => {
-    res.render('../public/connection/register', { title: 'register' });
+    res.render('../connection/register', { title: 'register' });
   });
   
   router.post('/reset-password', (req, res) => {
