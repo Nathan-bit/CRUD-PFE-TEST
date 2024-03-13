@@ -84,7 +84,51 @@
     $('#error-message').text('').hide();
 });
 
-   function SaveAndSend() {
+
+function SaveAndSend() {
+    var data = saveTable();
+    var options = getSelectedOption();
+    var tableName = getSelectedValue();
+    console.log("data before save", data);
+    $.ajax({
+        url: '/uploadsfiles/saveToDatabase', // Replace with your server-side endpoint URL
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            Data: data,
+            Options: options,
+            TableName: tableName
+        }),
+        success: function (response) {
+            // Check if the response contains a message
+            if (response && response.message) {
+                // Show success message
+                $('#success-message').text("Success: " + response.message).show();
+            } else {
+                // Show generic success message if response does not contain a message
+                $('#success-message').text("Success: Data saved successfully.").show();
+            }
+            // Hide error message if it's visible
+            $('#error-message').hide();
+        },
+        error: function (xhr, status, error) {
+            // Check if the response contains an error
+            if (xhr.responseJSON && xhr.responseJSON.error) {
+                // Show error message
+                var errorMessage = xhr.responseJSON.error;
+                $('#error-message').text("Error: " + errorMessage).show();
+            } else {
+                // Show generic error message if response does not contain an error
+                $('#error-message').text("Error: Failed to save data.").show();
+            }
+            // Hide success message if it's visible
+            $('#success-message').hide();
+        }
+    });
+}
+
+
+   /* function SaveAndSend() {
     var data = saveTable();
     var options = getSelectedOption();
     var tableName = getSelectedValue();
@@ -113,7 +157,7 @@
         }
     });
 }
-
+ */
    // }
 
     function getSelectedOption() {

@@ -37,7 +37,7 @@ const Employer = sequelize.define('Employer', {
     allowNull: true
   }
 }, {
-  tableName: 'Admin',
+  tableName: 'Chef',
   timestamps: false
 });
 
@@ -71,7 +71,7 @@ const Etudiant = sequelize.define('Etudiant', {
     allowNull: true
   },
 }, {
-  tableName: 'Departements',
+  tableName: 'Docteur',
   timestamps: false
 });
 

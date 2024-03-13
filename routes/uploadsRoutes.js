@@ -16,8 +16,8 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 // Initialize multer
-const uploadFolder = 'uploads';
-const uploadFolderPath = path.join(__dirname, '..', '..', uploadFolder);
+const uploadFolder = 'Uploads';
+const uploadFolderPath = path.join(__dirname,  '..', uploadFolder);
 if (!fs.existsSync(uploadFolderPath)) {
     fs.mkdirSync(uploadFolderPath);
 }
@@ -105,6 +105,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 });
 
+
+
 router.post('/saveToDatabase', async (req, res) => {
   const { Data, Options, TableName } = req.body;
   let d = Data;
@@ -130,29 +132,41 @@ router.post('/saveToDatabase', async (req, res) => {
           const query = 'INSERT INTO ?? SET ?';
           await connection.query(query, [TableName, item]);
         } catch (error) {
-          // Ignore duplicate key errors
-          if (error.code !== 'ER_DUP_ENTRY') {
-            console.error('Error inserting data:', error);
-            res.status(500).json({ error: 'Internal server error.' });
-            return;
-          }
+          // Log error for debugging
+          console.error('Error inserting data:', error);
+          // Send appropriate error response to client
+          res.status(500).json({ error: 'Internal server error. Failed to insert data.' });
+          return;
         }
       }
-      res.status(200).json({ message: 'Data inserte                                                                                                                                                                                                                                                                                                                                                                                                                                                                        d successfully.' });
+      // Send success response to client
+      res.status(200).json({ message: 'Data inserted successfully.' });
     } else if (Options === '2') {
       // Insert new data and update existing data
       for (const item of d) {
         const query = 'INSERT INTO ?? SET ? ON DUPLICATE KEY UPDATE ?';
-        await connection.query(query, [TableName, item, item]);
+        try {
+          await connection.query(query, [TableName, item, item]);
+        } catch (error) {
+          // Log error for debugging
+          console.error('Error inserting/updating data:', error);
+          // Send appropriate error response to client
+          res.status(500).json({ error: 'Internal server error. Failed to insert/update data.' });
+          return;
+        }
       }
+      // Send success response to client
       res.status(200).json({ message: 'Data inserted and updated successfully.' });
     }
   } catch (error) {
+    // Log error for debugging
     console.error('Error saving data to database:', error);
+    // Send appropriate error response to client
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
 
+ 
 
   router.get('/upload', (req, res) => { 
     console.log('items from uploads', items)
