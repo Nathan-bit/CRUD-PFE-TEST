@@ -22,7 +22,7 @@ const UserRegistration = sequelize.define('UserRegistration', {
     },
     ROLE: {
       type: DataTypes.STRING,
-      defaultValue: 'user',
+      defaultValue: 'USER',
       allowNull: false
     },
     ISVALIDATED: {
