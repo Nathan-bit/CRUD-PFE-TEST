@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 
-let DB='';
+
 // Replace 'database_name', 'username', 'password', and 'host' with your MySQL database credentials
 const sequelize = new Sequelize('fss', 'root', '', {
   host: 'localhost',
@@ -75,6 +75,40 @@ const Etudiant = sequelize.define('Etudiant', {
   timestamps: false
 });
 
+/* const UserRegistration = sequelize.define('UserRegistration', {
+  nom: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  prenom: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  role: {
+    type: DataTypes.STRING,
+    defaultValue :'user',
+    allowNull: false
+  },
+  isValidated: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+}, {
+  
+  timestamps: true
+});
+ */
+
+
+
 // Function to get all tables and their structures
 async function getAllTablesAndStructure() {
   try {
@@ -147,6 +181,7 @@ async function syncModel() {
   try {
     await Employer.sync({ alter: true });
     await Etudiant.sync({ alter: true });
+   // await UserRegistration.sync({ alter: true });
   } catch (error) {
     console.error('Error syncing models:', error);
   }
@@ -167,8 +202,11 @@ syncModel();
 module.exports = {
   Employer,
   Etudiant,
+//  UserRegistration,
   getAllTablesAndStructure,
-  getDataFromTable
+  getDataFromTable,
+  sequelize,
+  DataTypes
 
   //getAllTablesAndData
 };

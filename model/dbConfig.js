@@ -8,6 +8,11 @@ const connection = mysql.createConnection({
   database: 'fss'
 });
 
+
+
+
+
+
 connection.connect(err => {
   if (err) {
     console.error('Error connecting to MySQL:', err);
