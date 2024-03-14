@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const path = require('path');
 const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
@@ -86,7 +87,7 @@ router.get('/confirm-email', async (req, res) => {
     } */
 
     // Update isvalidated column to true
-    await userRegistration.update({ ISVALIDATED: true });
+    await userRegistration.update({ ISVALIDATED: true , TOKEN :'0'});
 
     // Respond with success message
     res.send('Account activated successfully');
@@ -127,6 +128,50 @@ router.post('/reset-password',limiter, async (req, res) => {
   }
 });
 
+router.get('/reset-password', (req, res) => {
+  // Extract email and token from query parameters
+  const { email, token } = req.query;
+
+  // Render the reset password page and pass the email and token to the template
+   res.render('../connection/resetpassword',{email:email ,token:token}); 
+ // res.sendFile(path.join(__dirname, '../connection/resetpassword.ejs')); 
+});
+
+
+router.post('/resetedpassword', async (req, res) => {
+  const { email, password, token } = req.body;
+  const data=req.body;
+  console.log(data);
+
+  try {
+    // Find the user by email and token
+    const user = await UserRegistration.findOne({ where: { EMAIL: email, TOKEN: token } });
+
+    // If user not found or token is expired
+    if (!user || user.TOKEN === '0') {
+      return res.status(400).json({ error: 'Your reset token is expired' });
+    }
+
+    // Generate salt
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Update the user's password and reset token
+    await UserRegistration.update(
+      { PASSWORD: hashedPassword, TOKEN: '0' }, // Set token to '0' to mark it as used
+      { where: { EMAIL: email } }
+    );
+
+    return res.status(200).json({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    return res.status(500).json({ error: 'An error occurred while resetting the password' });
+  }
+});
+
 function generateRegistrationToken(email) {
   return jwt.sign({ email }, process.env.secretKey, { expiresIn: '1d' }); // Expires in 1 
   
@@ -134,7 +179,9 @@ function generateRegistrationToken(email) {
 function generateResetToken(email) {
   const hash = crypto.createHash('sha256');
   hash.update(email);
-  return hash.digest('hex');
+  hash.push(crypto.randomBytes(32).toString('hex'))
+  const secretKey = crypto.randomBytes(16).toString('hex');
+  const resetToken = hash.digest('hex');
+  return secretKey+resetToken;
 }
-
   module.exports = router;

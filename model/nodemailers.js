@@ -133,7 +133,7 @@ const mailOptions = {
             <p>Dear User,</p>
             <p>We received a request to reset your password. If this was not you, please ignore this email.</p>
             <p>To reset your password, click the link below:</p>
-            <a  href="${process.env.FRONTEND_URL}/connection/reset-password?token=${resetToken}">Reset Password</a>
+            <a  href="${process.env.FRONTEND_URL}/connection/reset-password?email=${email}&token=${resetToken}">Reset Password</a>
             <p>The link will expire in 24 hours for security reasons.</p>
           </div>
           <div class="signature">
