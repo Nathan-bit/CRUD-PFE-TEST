@@ -2,11 +2,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connection = require('../model/dbConfig');
+const authenticate = require('../middlewares/auth');
+const { isAdmin, isUser } = require('../middlewares/roles');
 const router = express.Router();
 
 
 
-router.get('/gestion', (req, res) => {
+/* router.get('/gestion', (req, res) => {
   // Query MySQL for table names
   connection.query('SHOW TABLES', (err, results) => {
     if (err) {
@@ -18,8 +20,12 @@ router.get('/gestion', (req, res) => {
     res.render('index', { tables });
   });
 });
+ */
+router.get('/',(req, res) => {
+  res.render('home');
+});
 
-router.get('/', (req, res) => {
+router.get('/home',(req, res) => {
   res.render('home');
 });
 

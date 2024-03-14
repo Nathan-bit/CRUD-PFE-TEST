@@ -75,39 +75,6 @@ const Etudiant = sequelize.define('Etudiant', {
   timestamps: false
 });
 
-/* const UserRegistration = sequelize.define('UserRegistration', {
-  nom: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  prenom: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  role: {
-    type: DataTypes.STRING,
-    defaultValue :'user',
-    allowNull: false
-  },
-  isValidated: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-}, {
-  
-  timestamps: true
-});
- */
-
-
 
 // Function to get all tables and their structures
 async function getAllTablesAndStructure() {

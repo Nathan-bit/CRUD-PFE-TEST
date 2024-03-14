@@ -1,5 +1,5 @@
 
-
+const bcrypt = require('bcrypt');
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../model/model'); // Adjust the path as needed
 
@@ -21,9 +21,8 @@ const UserRegistration = sequelize.define('UserRegistration', {
       allowNull: false
     },
     ROLE: {
-      type: DataTypes.STRING,
-      defaultValue: 'USER',
-      allowNull: false
+      type: DataTypes.ENUM('USER', 'ADMIN'),
+    defaultValue: 'USER'
     },
     ISVALIDATED: {
       type: DataTypes.BOOLEAN,
@@ -34,8 +33,19 @@ const UserRegistration = sequelize.define('UserRegistration', {
       allowNull: true
     }
   }, {
-    timestamps: true
+    timestamps: true, 
+    hooks: {
+      beforeCreate: async (UserRegistration) => {
+        if (UserRegistration.PASSWORD) {
+          const salt = await bcrypt.genSalt(10); // Removed the second argument
+          UserRegistration.PASSWORD = await bcrypt.hash(UserRegistration.PASSWORD, salt); // Used await here
+        }
+      }
+    }
   });
+  UserRegistration.prototype.validPassword = function(PASSWORD) {
+    return bcrypt.compareSync(PASSWORD, this.PASSWORD);
+  };
   
 
 async function syncModel() {

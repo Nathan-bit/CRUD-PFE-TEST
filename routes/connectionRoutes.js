@@ -6,12 +6,25 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const router = express.Router();
+const authenticate = require('../middlewares/auth');
+const { isAdmin, isUser } = require('../middlewares/roles');
+const cookieParser = require('cookie-parser');
+const {sendUserRegistrationMail,sendUserResetPasswordMail}=require('../utils/emailUtils');
 const UserRegistration  = require('../controllers/UserRegistration'); // Import UserRegistration model
-const {sendUserRegistrationMail,sendUserResetPasswordMail}=require('../model/nodemailers');
 require('dotenv').config();
 
+const router = express.Router();
+const app=express();
 
+app.use(express.urlencoded({extended : true}));
+app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.json())
+app.use(session ({
+    secret : process.env.secretKey,
+    resave: true,
+    saveUninitialized: true
+}))
 
 
 
@@ -19,11 +32,20 @@ require('dotenv').config();
 router.get('/login', (req, res) => {
     res.render('../connection/login', { title: 'Login' });
   });
+
   router.get('/register', (req, res) => {
     res.render('../connection/register', { title: 'register' });
   });
-  
 
+  router.get('/logout', (req , res)=> {
+    res.clearCookie('token');
+    res.redirect('../connection/login');
+  })
+
+  router.get('/protected', authenticate, (req, res) => {
+    res.json({ message: 'You are authenticated' });
+  });
+  
   // Apply rate limiting middleware
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
@@ -42,7 +64,7 @@ router.post('/register', async function(req, res) {
       }
 
       // Hash the password
-      const hashedPassword = await bcrypt.hash(password, 10);
+      //const hashedPassword = await bcrypt.hash(password, 10);
       
       // Generate registration token
       const registrationToken = generateRegistrationToken(email);
@@ -52,7 +74,7 @@ router.post('/register', async function(req, res) {
           NOM: nom.trim().toUpperCase(),
           PRENOM: prenom.trim(),
           EMAIL: email.trim().toLowerCase(),
-          PASSWORD: hashedPassword,
+          PASSWORD: password,
           TOKEN: registrationToken
       });
 
@@ -128,7 +150,7 @@ router.post('/reset-password',limiter, async (req, res) => {
   }
 });
 
-router.get('/reset-password', (req, res) => {
+router.get('/reset-password', async (req, res) => {
   // Extract email and token from query parameters
   const { email, token } = req.query;
 
@@ -155,7 +177,6 @@ router.post('/resetedpassword', async (req, res) => {
     // Generate salt
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
-
     // Hash the new password
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -169,6 +190,31 @@ router.post('/resetedpassword', async (req, res) => {
   } catch (error) {
     console.error('Error resetting password:', error);
     return res.status(500).json({ error: 'An error occurred while resetting the password' });
+  }
+});
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  console.log(email, password);
+
+  try {
+    
+    const user = await UserRegistration.findOne({ where: { email } }); // Use UserRegistration model to find the user
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (!user.validPassword(password)) {
+      return res.status(401).json({ error: 'Invalid password' });
+    }
+
+    const token = jwt.sign({ userId: user.id, role: user.role }, process.env.secretKey, { expiresIn: '1d' });
+    res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+   res.redirect('/home');
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

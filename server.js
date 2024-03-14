@@ -6,10 +6,14 @@ const routes = require('./routes/routes');
 const connectionRoutes=require('./routes/connectionRoutes')
 const uploadsRoutes=require('./routes/uploadsRoutes')
 const databaseRoutes=require('./routes/databaseRoutes')
+const authenticate = require('./middlewares/auth');
+const { isAdmin, isUser } = require('./middlewares/roles');
+const cookieParser = require('cookie-parser');
 
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 // Set views directory
 app.set('views', path.join(__dirname, 'views'));
@@ -24,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 // Import routes
-app.use('/', routes);
+app.use('/',routes);
 app.use('/connection',connectionRoutes);
 app.use('/uploadsfiles',uploadsRoutes);
 app.use('/gestion',databaseRoutes);

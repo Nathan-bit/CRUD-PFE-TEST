@@ -29,54 +29,54 @@
 
 <body>
   <div class="container">
-    <form>
-    <div class="tab-content">
-    
+  <form  action="/connection/login" method="POST">
+  <div class="tab-content">
+  
+   
+        <!-- Email input -->
+        <div class="text-center">
+          <h3>CONNECTION</h3>
+        </div>
+        
+        <div class="form-outline mb-4">
+          <input type="email" id="loginEmail" class="form-control" name="email" required />
+          <label class="form-label" for="loginEmail" >email </label>
+        </div>
+
+        <!-- Password input -->
+        <div class="form-outline position-relative mb-4">
+          <input type="password" id="loginPassword" class="form-control" name="password" required/>
+          <label class="form-label" for="loginPassword">password</label>
+        </div>
+        
+        <!-- 2 column grid layout -->
+        <div class="row mb-4">
+          <div class="col-md-6 d-flex justify-content-center">
+            <!-- Checkbox -->
+            <div class="form-check mb-3 mb-md-0">
+              <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
+              <label class="form-check-label" for="loginCheck"> Remember me </label>
+            </div>
+          </div>
+
+          <div class="col-md-6 d-flex justify-content-center">
+            <!-- Forgot password link -->
+           <label> <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a></label>
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+        <!-- Not a member link -->
+        <div class="text-center">
+          <p>Not a member? <a href="register">Register</a></p>
+        </div>
      
-          <!-- Email input -->
-          <div class="text-center">
-            <h3>CONNECTION</h3>
-          </div>
-          
-          <div class="form-outline mb-4">
-            <input type="email" id="loginEmail" class="form-control"  required />
-            <label class="form-label" for="loginEmail" >Email </label>
-          </div>
-
-          <!-- Password input -->
-          <div class="form-outline position-relative mb-4">
-            <input type="password" id="loginPassword" class="form-control" required/>
-            <label class="form-label" for="loginPassword">Password</label>
-          </div>
-          
-          <!-- 2 column grid layout -->
-          <div class="row mb-4">
-            <div class="col-md-6 d-flex justify-content-center">
-              <!-- Checkbox -->
-              <div class="form-check mb-3 mb-md-0">
-                <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
-                <label class="form-check-label" for="loginCheck"> Remember me </label>
-              </div>
-            </div>
-
-            <div class="col-md-6 d-flex justify-content-center">
-              <!-- Forgot password link -->
-             <label> <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a></label>
-            </div>
-          </div>
-
-          <!-- Submit button -->
-          <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-
-          <!-- Not a member link -->
-          <div class="text-center">
-            <p>Not a member? <a href="register">Register</a></p>
-          </div>
-       
-      </div>
     </div>
-</form>
   </div>
+</form>
+</div>
 
 
                 <%- include('reset') %>
