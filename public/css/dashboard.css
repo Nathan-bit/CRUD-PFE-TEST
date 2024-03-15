@@ -60,13 +60,13 @@ body {
 }
 
 .sidebar-nav ul li a:hover {
-    background-color: #444;
+    background-color: #ffffff;
 }
 
 /* Styles du navbar */
 .navbar {
     background-color: rgba(0, 0, 0, 0.845);
-    color: #ffffffa8;
+    color: #eeeeee;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -77,7 +77,7 @@ body {
 .search-bar {
     display: flex;
     align-items: center;
-    background-color: #8c8989;
+    background-color: #0a0a0a;
     padding: 5px 10px;
     border-radius: 20px;
 }
