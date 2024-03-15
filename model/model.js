@@ -75,7 +75,6 @@ const Etudiant = sequelize.define('Etudiant', {
   timestamps: false
 });
 
-
 // Function to get all tables and their structures
 async function getAllTablesAndStructure() {
   try {

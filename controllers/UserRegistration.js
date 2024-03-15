@@ -20,7 +20,7 @@ const UserRegistration = sequelize.define('UserRegistration', {
       type: DataTypes.STRING,
       allowNull: false
     },
-    ROLE: {
+    role: {
       type: DataTypes.ENUM('USER', 'ADMIN'),
     defaultValue: 'USER'
     },

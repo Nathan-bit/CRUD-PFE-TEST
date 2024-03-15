@@ -1,4 +1,5 @@
 // app.js
+const session = require('express-session');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -14,6 +15,11 @@ const cookieParser = require('cookie-parser');
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(session ({
+  secret : process.env.secretKey,
+  resave: true,
+  saveUninitialized: true
+}))
 
 // Set views directory
 app.set('views', path.join(__dirname, 'views'));
@@ -26,12 +32,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
+app.set('view cache',false)
+
+
+
 
 // Import routes
 app.use('/',routes);
 app.use('/connection',connectionRoutes);
-app.use('/uploadsfiles',uploadsRoutes);
-app.use('/gestion',databaseRoutes);
+app.use('/uploadsfiles',authenticate,isUser,uploadsRoutes);
+// Protect /gestion and its subroutes with authenticate middleware
+/* app.use('/gestion', authenticate, databaseRoutes); */
+app.use('/gestion', authenticate,isAdmin, databaseRoutes);
+
+
+
+// Similar for other routes
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

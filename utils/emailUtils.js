@@ -14,6 +14,37 @@ const transporter = nodemailer.createTransport({
 
 // Function to send registration email
 // Email content
+async function sendUserLoginInfoMail(email, name, ip, location, time) {
+  try {
+    // Prepare HTML content for the email
+    const htmlContent = `
+      <html>
+        <body>
+          <p>Hello ${name},</p>
+          <p>Your account was just logged in from ${ip} (${location}) at ${time}.</p>
+          <p>Sincerely,</p>
+          <p>Your Company Name</p>
+        </body>
+      </html>
+    `;
+
+
+    const mailOptions = {
+      from: "gabiamsamuelnathan@gmail.com", // Sender address
+      to: email, // Receiver address (user's email)
+      subject: 'Login Information',
+      html: htmlContent
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + info.response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
 async function sendUserRegistrationMail(email, name,confirmationToken) {
 const mailOptions = {
     from: 'Gestions Stages', // Sender address
@@ -156,4 +187,4 @@ try {
 }
 
 
-module.exports = {sendUserRegistrationMail,sendUserResetPasswordMail};
+module.exports = {sendUserRegistrationMail,sendUserResetPasswordMail,sendUserLoginInfoMail };

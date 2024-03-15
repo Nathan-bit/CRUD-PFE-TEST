@@ -1,2 +1,55 @@
-<h1>HELLO</h1>
-<a href="/connection/logout">logout</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Stages - Dashboard Admin</title>
+    <link rel="stylesheet" href="../public/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar-nav">
+            <div class="logo">
+                <a href="/">Gestion des Stages</a>
+            </div>
+            <ul>
+                <li><a href="/"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
+                <li><a href="/students"><i class="fas fa-users"></i> Étudiants</a></li>
+                <li><a href="/teachers"><i class="fas fa-chalkboard-teacher"></i> Enseignants</a></li>
+                <li><a href="/companies"><i class="fas fa-building"></i> Entreprises</a></li>
+                <li><a href="/internships"><i class="fas fa-file-alt"></i> Liste des stages</a></li>
+                <li><a href="/calendar"><i class="fas fa-calendar-alt"></i> Calendrier</a></li>
+                <li><a href="/settings"><i class="fas fa-cog"></i> Paramètres</a></li>
+                <li><a href="uploadsfiles/upload"><i class="fas fa-tasks"></i> Gestion</a></li>
+                <li><a href="/supervision"><i class="fas fa-file-alt"></i> Encadrement</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <nav class="navbar">
+                <div class="search-bar">
+                    <input type="text" placeholder="Rechercher...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="user-info">
+                    <i class="fas fa-bell"></i>
+                    <div class="user-avatar">
+                        <img src="https://via.placeholder.com/40" alt="Avatar">
+                    </div>
+                    
+                    
+                    <i class="fas fa-sign-out-alt"> <a href="/connection/logout">logout</a> </i>
+                </div>
+            </nav>
+            <h1>Tableau de bord</h1>
+            <!-- Contenu principal ici -->
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="../public/js/script.js"></script>
+      <!-- Include Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

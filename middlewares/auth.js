@@ -25,8 +25,12 @@ const authenticate = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
+
+    // Store the original URL in session or cookie
+    req.session.returnTo = req.originalUrl;
+    
     // No token provided, redirect to login
-    return res.redirect('/connection/login');
+    return res.redirect('/connection');
   }
 
   try {
@@ -36,7 +40,7 @@ const authenticate = (req, res, next) => {
     next();
   } catch (err) {
     // Invalid token, redirect to login
-    res.redirect('/connection/login');
+    res.redirect('/connection');
   }
 };
 

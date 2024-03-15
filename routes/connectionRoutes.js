@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const axios = require('axios');
 const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
@@ -9,7 +10,7 @@ const crypto = require('crypto');
 const authenticate = require('../middlewares/auth');
 const { isAdmin, isUser } = require('../middlewares/roles');
 const cookieParser = require('cookie-parser');
-const {sendUserRegistrationMail,sendUserResetPasswordMail}=require('../utils/emailUtils');
+const {sendUserRegistrationMail,sendUserResetPasswordMail,sendUserLoginInfoMail}=require('../utils/emailUtils');
 const UserRegistration  = require('../controllers/UserRegistration'); // Import UserRegistration model
 require('dotenv').config();
 
@@ -20,16 +21,8 @@ app.use(express.urlencoded({extended : true}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json())
-app.use(session ({
-    secret : process.env.secretKey,
-    resave: true,
-    saveUninitialized: true
-}))
 
-
-
-
-router.get('/login', (req, res) => {
+router.get(['/', '/login'], (req, res) => {
     res.render('../connection/login', { title: 'Login' });
   });
 
@@ -112,16 +105,16 @@ router.get('/confirm-email', async (req, res) => {
     await userRegistration.update({ ISVALIDATED: true , TOKEN :'0'});
 
     // Respond with success message
-    res.send('Account activated successfully');
+    res.send('Account activated successfully ');
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-router.post('/reset-password',limiter, async (req, res) => {
+router.post('/reset-password', async (req, res) => {
   const { email } = req.body;
-
+             console.log('reset  email :', email   );
   try {
     // Find the user registration record by email
     const userRegistration = await UserRegistration.findOne({ where: { email } });
@@ -198,7 +191,6 @@ router.post('/login', async (req, res) => {
   console.log(email, password);
 
   try {
-    
     const user = await UserRegistration.findOne({ where: { email } }); // Use UserRegistration model to find the user
 
     if (!user) {
@@ -209,14 +201,18 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid password' });
     }
 
+
     const token = jwt.sign({ userId: user.id, role: user.role }, process.env.secretKey, { expiresIn: '1d' });
     res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-   res.redirect('/home');
+    const redirectTo = req.session.returnTo || '/home'; // Default to '/home' if no returnTo URL is stored
+    delete req.session.returnTo; // Remove the stored URL from session
+    res.redirect(redirectTo); // Redirect to home page
 
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 function generateRegistrationToken(email) {
   return jwt.sign({ email }, process.env.secretKey, { expiresIn: '1d' }); // Expires in 1 
@@ -230,4 +226,5 @@ function generateResetToken(email) {
   const resetToken = hash.digest('hex');
   return secretKey+resetToken;
 }
+
   module.exports = router;

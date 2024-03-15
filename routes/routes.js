@@ -21,14 +21,19 @@ const router = express.Router();
   });
 });
  */
-router.get('/',(req, res) => {
+/* 
+router.use((req, res, next) => {
+  if (req.path === '/connection/login') {
+    return next();
+  }
+  authenticate(req, res, next);
+}); */
+
+router.get(['/', '/home'], (req, res) => {
   res.render('home');
 });
 
-router.get('/home',(req, res) => {
-  res.render('home');
-});
 
-  
+
 
 module.exports = router;

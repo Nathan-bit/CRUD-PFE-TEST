@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Select a Table</h1>
+    <h1>Select a Table   <a href="/connection/logout">logout</a></h1> 
     <select id="tableName" class="form-control" style="width: 150px;">
       <option value="">Select a table</option> <!-- Empty option added -->
       <% tables.forEach(table => { %>
@@ -17,7 +17,7 @@
         <option value="<%= table.Tables_in_fss %>"><%= table.Tables_in_fss %></option>
       <% }); %>
     </select>
-
+    
     <div id="tableData" class="mt-3"></div>
   </div>
 
