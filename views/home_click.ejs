@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Sidebar</title>
+    <link href="https://cdn.jsdelivr.net/npm/mdbootstrap/css/bootstrap.min.css" rel="stylesheet">
+ <!-- Font Awesome CSS -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Adjust styling as needed */
+        .sidenav {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #858282; /* Bootstrap default background color */
+            padding-top: 20px;
+            padding-right: 10px;
+        }
+
+        .sidenav button {
+            display: block;
+            width: 100%;
+            padding: 8px 16px;
+            background-color: transparent; /* Transparent button */
+            border: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .sidenav button:hover {
+            background-color: #e9ecef; /* Bootstrap default hover color */
+        }
+
+        .content {
+            margin-left: 250px; /* Adjust based on your sidebar width */
+            padding: 20px;
+            padding-top: 60px; /* Height of the navbar */
+        }
+        .sidenav button.selected {
+            background-color: #007bff;
+            color: #fff; /* Change text color to white for better visibility */
+        }
+
+        /* Style for the navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 250px; /* Match the width of the sidenav */
+            width: calc(100% - 250px); /* Adjust based on the width of the sidenav */
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-light bg-light">
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          <a href="/connection/logout">  <button class="btn btn-outline-danger my-2 my-sm-0" >logout</button></a>
+        </nav>
+
+        <div id="mySidenav" class="sidenav">
+            <button onclick="loadPage('index')" id="page1Btn">index</button>
+            <button onclick="loadPage('uploads')" id="page2Btn">uploads</button>
+            <button onclick="loadPage('etudiant')" id="page3Btn">etudiant</button>
+            <!-- Dropdown button for Page 4 -->
+            <button class="dropdown-btn" id="page4Btn">Page 4</button>
+            <div class="dropdown-container">
+                <!-- Sub-items under Page 4 -->
+                <button onclick="loadPage('gestion')" id="page4ABtn" style="margin-left: 20px;">gestion</button>
+                <button onclick="loadPage('uploads')" id="page4BBtn" style="margin-left: 20px;">uploads</button>
+            </div>
+        </div>
+        <div class="content" id="content">
+            <!-- EJS content will be rendered here -->
+        </div>
+    </div>
+  <!-- Include Bootstrap JS and jQuery from CDN -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <!--   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.9/dist/umd/popper.min.js"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mdbootstrap/js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mdbootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS (jQuery and Popper.js required) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+                 function validateAndUpload() {
+    var fileInput = document.getElementById('file');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.csv|\.xlsx)$/i;
+
+    if (!allowedExtensions.exec(filePath)) {
+        displayError("Please choose a .csv or .xlsx file.");
+    } else {
+        // Proceed with file upload
+        document.getElementById('uploadForm').submit();
+    }
+}
+
+function displayError(message) {
+    var errorMessageElement = document.getElementById('errorMessage');
+    errorMessageElement.textContent = message;
+    $('#errorModal').modal('show');
+}
+
+
+ // Function to open the side navigation
+ function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+// Function to close the side navigation
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+// Function to load pages
+ function loadPage(pageName) {
+    fetch(`/pages/${pageName}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('content').innerHTML = html;
+            // Clear existing selection
+            document.querySelectorAll('.sidenav button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            // Mark selected item
+            document.getElementById(`${pageName}Btn`).classList.add('selected');
+            // Update URL
+            history.pushState(null, null, `?page=${pageName}`);
+        })
+        .catch(error => {
+            console.error('Error loading page:', error);
+        });
+}
+ 
+
+
+ /* function loadPage(pageName) {
+  if (pageName === 'uploads') {
+    // Navigate to the /uploads route
+    window.location.href = '/upload';
+  } else {
+    // Load other pages as before
+    fetch(`/pages/${pageName}`)
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('content').innerHTML = html;
+        // ... (rest of the code)
+      })
+      .catch(error => {
+        console.error('Error loading page:', error);
+      });
+  }
+} */
+// Function to handle back/forward navigation
+window.onpopstate = function(event) {
+    // Parse the URL to get the page name
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageName = urlParams.get('page');
+    if (pageName) {
+        // Load the page
+        loadPage(pageName);
+    }
+};
+
+// Load the initial page when the page loads
+window.onload = function() {
+    // Parse the URL to get the page name
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageName = urlParams.get('page');
+    if (pageName) {
+        // Load the page
+        loadPage(pageName);
+    }
+};
+
+// Toggle dropdown
+document.addEventListener("DOMContentLoaded", function() {
+    var dropdownBtns = document.querySelectorAll('.dropdown-btn');
+    dropdownBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    });
+});
+
+function validateAndUpload() {
+    var fileInput = document.getElementById('file');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.csv|\.xlsx)$/i;
+
+    if (!allowedExtensions.exec(filePath)) {
+        displayError("Please choose a .csv or .xlsx file.");
+    } else {
+        // Proceed with file upload
+        document.getElementById('uploadForm').submit();
+    }
+}
+
+
+
+// Logout function
+function logout() {
+    // Add logout logic here
+    alert("Logged out successfully!");
+}
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@ const router = express.Router();
 // Use bodyParser middleware to parse request bodies
 router.use(bodyParser.urlencoded({ extended: true }));
 
-
+let table;
 router.get('/', (req, res) => {
     // Query MySQL for table names
     connection.query('SHOW TABLES', (err, results) => {
@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
         return;
       }
       const tables = results.map(row => ({ Tables_in_fss: row[`Tables_in_${connection.config.database}`] }));
+      table=tables;
       res.render('index', { tables });
     });
   });
@@ -106,7 +107,6 @@ router.get('/', (req, res) => {
       res.redirect(`/gestion/${tableName}`);
     });
   });
-
 
 
   

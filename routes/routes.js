@@ -29,11 +29,9 @@ router.use((req, res, next) => {
   authenticate(req, res, next);
 }); */
 
-router.get(['/', '/home'], (req, res) => {
+/* router.get(['/', '/home'], (req, res) => {
   res.render('home');
 });
-
-
-
+ */
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const ejs = require('ejs');
 const fs = require('fs');
 const xlsx = require('xlsx');
 const multer = require('multer');
@@ -172,6 +173,46 @@ router.post('/saveToDatabase', async (req, res) => {
     console.log('items from uploads', items)
     res.render('uploads',{dt : data, items:items });
 });
+
+router.get('/pages/:pageName', (req, res) => {
+  const pageName = req.params.pageName;
+  // Define data for each page dynamically
+  let data = {};
+  
+   if (pageName === 'uploads') {
+    data = { dt: data, items: items };
+    ejs.renderFile(`views/uploads.ejs`, data,{items: items},{ layout: 'layouts/main', sidebar: true }, (err, html) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send('Internal Server Error');
+      }
+      res.send(html);
+  });
+
+  }  else if (pageName === 'etudiant') {
+   
+    ejs.renderFile(`views/etudiant.ejs`,{ layout: 'layouts/main', sidebar: true }, (err, html) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send('Internal Server Error');
+      }
+      res.send(html);
+  });
+
+  } 
+  
+  
+  else {
+    // Handle unknown page names
+    console.error('Unknown page:');
+    return res.status(404).send('Page not found');
+  }
+  
+  // Render the EJS file with dynamic data
+  
+});
+
+
 
 
 module.exports = router;

@@ -87,7 +87,7 @@ function SaveAndSend() {
     var tableName = getSelectedValue();
     console.log("data before save", data);
     $.ajax({
-        url: '/uploadsfiles/saveToDatabase', // Replace with your server-side endpoint URL
+        url: '/saveToDatabase', // Replace with your server-side endpoint URL
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({

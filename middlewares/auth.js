@@ -13,7 +13,7 @@ const authenticate = (req, res, next) => {
     next();
   } catch (err) {
     res.status(403).json({ error: 'Invalid token' });
-  }
+  } 
 };
 
 module.exports = authenticate; */

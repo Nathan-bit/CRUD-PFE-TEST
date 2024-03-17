@@ -12,10 +12,14 @@
     <h1>Select a Table   <a href="/connection/logout">logout</a></h1> 
     <select id="tableName" class="form-control" style="width: 150px;">
       <option value="">Select a table</option> <!-- Empty option added -->
-      <% tables.forEach(table => { %>
-        <!-- Make sure to reference the correct property -->
-        <option value="<%= table.Tables_in_fss %>"><%= table.Tables_in_fss %></option>
-      <% }); %>
+      <% if (tables && tables.length > 0) { %>
+        <% tables.forEach(table => { %>
+          <!-- Make sure to reference the correct property -->
+          <option value="<%= table.Tables_in_fss %>"><%= table.Tables_in_fss %></option>
+        <% }); %>
+      <% } else { %>
+        <option value="" disabled>No tables available</option>
+      <% } %>
     </select>
     
     <div id="tableData" class="mt-3"></div>

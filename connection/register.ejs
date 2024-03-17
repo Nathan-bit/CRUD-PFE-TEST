@@ -37,6 +37,9 @@
 
 <body>
   <div class="container">
+    <% if (messages && messages.error) { %>
+      <div class="alert alert-danger"><%= messages.error %></div>
+    <% } %>
    <!--  <form action="/connection/register"  method="POST" > -->
     <form  action="/connection/register" method="POST">
 

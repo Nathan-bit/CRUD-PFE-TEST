@@ -1,0 +1,71 @@
+<style>
+    /* Adjust styling as needed */
+    .sidenav {
+        height: 100%;
+        width: 250px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #858282; /* Bootstrap default background color */
+        padding-top: 20px;
+        padding-right: 10px;
+    }
+
+    .sidenav button {
+        display: block;
+        width: 100%;
+        padding: 8px 16px;
+        background-color: transparent; /* Transparent button */
+        border: none;
+        outline: none;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .sidenav button:hover {
+        background-color: #e9ecef; /* Bootstrap default hover color */
+    }
+
+    .content {
+        margin-left: 250px; /* Adjust based on your sidebar width */
+        padding: 20px;
+        padding-top: 60px; /* Height of the navbar */
+    }
+    .sidenav button.selected {
+        background-color: #007bff;
+        color: #fff; /* Change text color to white for better visibility */
+    }
+
+    /* Style for the navbar */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 250px; /* Match the width of the sidenav */
+        width: calc(100% - 250px); /* Adjust based on the width of the sidenav */
+        z-index: 1;
+    }
+</style>
+
+
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <button class="btn btn-outline-danger my-2 my-sm-0" onclick="logout()">Logout</button>
+</nav>
+
+<div id="mySidenav" class="sidenav">
+    <button onclick="loadPage('index')" id="page1Btn">index</button>
+    <button onclick="loadPage('uploads')" id="page2Btn">uploads</button>
+    <button onclick="loadPage('crud')" id="page3Btn">crud</button>
+    <!-- Dropdown button for Page 4 -->
+    <button class="dropdown-btn" id="page4Btn">Page 4</button>
+    <div class="dropdown-container">
+        <!-- Sub-items under Page 4 -->
+        <button onclick="loadPage('index')" id="page4ABtn" style="margin-left: 20px;">Page 4A</button>
+        <button onclick="loadPage('page4')" id="page4BBtn" style="margin-left: 20px;">Page 4B</button>
+    </div>
+</div>
