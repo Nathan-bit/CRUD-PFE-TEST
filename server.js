@@ -54,7 +54,7 @@ app.use('/connection',connectionRoutes);
 app.use('/',authenticate,uploadsRoutes);
 // Protect /gestion and its subroutes with authenticate middleware
 //app.use('/gestion', authenticate, databaseRoutes); 
-app.use('/gestion',authenticate,isAdmin,databaseRoutes); 
+app.use('/gestion',authenticate,databaseRoutes); 
 
 
 
