@@ -212,7 +212,7 @@ router.post('/reseting-password', async (req, res) => {
 
     // Update the user's password and reset token
     await UserRegistration.update(
-      { PASSWORD: hashedPassword, TOKEN: '0' }, // Set token to '0' to mark it as used
+      { PASSWORD: hashedPassword, TOKEN: '0',ISVALIDATED:true }, // Set token to '0' to mark it as used
       { where: { EMAIL: email } }
     );
 
@@ -233,16 +233,17 @@ router.post('/login', async (req, res) => {
       req.flash('error', 'Email not found');
       return res.render('../connection/login', { messages: req.flash() });
     }
+    if(!user.ISVALIDATED){
+      
+      req.flash('info', ' Account not activated. Please check your email and confirm your registration before logging in.!');
+      return res.render('../connection/login', { messages: req.flash() });
+    }
 
     if (!user.validPassword(password)) {
       req.flash('error', 'Invalid password');
       return res.render('../connection/login', { messages: req.flash() });
     }
-    if(user.TOKEN!=='0'){
-      
-      req.flash('info', ' Account not activated. Please check your email and confirm your registration before logging in.!');
-      return res.render('../connection/login', { messages: req.flash() });
-    }
+    
 
     const token = jwt.sign({ userId: user.id, role: user.role }, process.env.secretKey, { expiresIn: '1d' });
 

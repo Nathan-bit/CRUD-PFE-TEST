@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 // Function to send registration email
 // Email content
-async function sendUserLoginInfoMail(email, name, ip, location, time) {
+/* async function sendUserLoginInfoMail(email, name, ip, location, time) {
   try {
     // Prepare HTML content for the email
     const htmlContent = `
@@ -41,7 +41,7 @@ async function sendUserLoginInfoMail(email, name, ip, location, time) {
   } catch (error) {
     console.log(error);
   }
-}
+} */
 
 
 
@@ -187,4 +187,4 @@ try {
 }
 
 
-module.exports = {sendUserRegistrationMail,sendUserResetPasswordMail,sendUserLoginInfoMail };
+module.exports = {sendUserRegistrationMail,sendUserResetPasswordMail };
