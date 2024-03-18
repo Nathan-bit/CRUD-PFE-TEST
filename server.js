@@ -56,52 +56,7 @@ app.use('/',authenticate,uploadsRoutes);
 //app.use('/gestion', authenticate, databaseRoutes); 
 app.use('/gestion',authenticate,databaseRoutes); 
 
-
-
-// Similar for other routes
-
-
-/* app.get('/pages/:pageName', (req, res) => {
-  const pageName = req.params.pageName;20
-  // Assume you have EJS files in a directory called 'views/pages'
-  ejs.renderFile(`views/${pageName}.ejs`, (err, html) => {
-      if (err) {
-          console.error(err);
-          res.status(404).send('Page not found');
-      } else {
-          res.send(html);
-      }
-  });
-});
- */
-
- /* app.get('/pages/:pageName', (req, res) => {
-  const pageName = req.params.pageName;
-  // Define data for each page dynamically
-  let data = {};
-  if (pageName === 'index') {
-    data = { dt: 'Homepage', data: 'Welcome to the homepage!' };
-  } else if (pageName === 'uploads') {
-    data = { title: 'Uploads', message: 'Here you can upload files.' };
-  } else if (pageName === 'etudiant') {
-  
-  } else {
-    // Handle unknown page names
-    console.error('Unknown page:', pageName);
-    return res.status(404).send('Page not found');
-  }
-  
-  // Render the EJS file with dynamic data
-  ejs.renderFile(`views/${pageName}.ejs`, data, (err, html) => {
-      if (err) {
-          console.error(err);
-          return res.status(500).send('Internal Server Error');
-      }
-      res.send(html);
-  });
-});
-  */
-app.get(['/','/home'], (req, res) => {
+app.get(['/','/home'], authenticate,(req, res) => {
   res.render('home');
 });
 

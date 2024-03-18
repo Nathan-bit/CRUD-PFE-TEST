@@ -9,13 +9,27 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../public/css/dashboard.css">
 
     <%- include('./partial/crud_header') %>
+
+    <style>
+            .table-responsive {
+        max-height: 520px; /* Set the maximum height for the table */
+        overflow-y: auto; /* Enable vertical scrollbar */
+    }
+    </style>
     
 </head>
 <body>
-<div class="table table-hover table table-sm " >
-    <h1>Les Données - <%= tableName.toUpperCase() %> <strong style="color:rgb(0, 0, 0) ;">  (<%= count %>)</strong></h1>
+<div class="container " >
+    <%-include('./common/sidebar') %>
+       <div class="main-content">
+        <%-include('./common/navbar') %>
+
+
+
+        <h1>Les Données - <%= tableName.toUpperCase() %> <strong style="color:rgb(0, 0, 0) ;">  (<%= count %>)</strong></h1>
     <a href="/gestion">Back to Home</a>
     <div class="mb-3">
         <input type="text" id="searchInput" class="form-control" placeholder="Search...">
@@ -121,6 +135,9 @@
     <% } else { %>
     <h2><p style="text-align: center;"> <%= tableName.toUpperCase() %> has no records</p></h2>
     <% } %>
+
+       </div>
+    
 </div>
 <%-include('./partial/crud_fades') %>
 <!-- Include Bootstrap JS -->
