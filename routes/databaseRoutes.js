@@ -34,7 +34,25 @@ router.get('/', (req, res) => {
         return;
       }
       let count=results.length
-      res.render('crud', { data: results, tableName, count  });
+      
+      const keysToRemove = ['PASSWORD', 'TOKEN','DATE'];
+      const filteredArray = results.map(obj => {
+        keysToRemove.forEach(key => delete obj[key]);
+        return obj;
+      });
+
+      /* const formattedArray = keysToRemove.map(obj => {
+        if (obj.DATE instanceof Date) {
+          const formattedDate = `${obj.date.getDate()}/${obj.date.getMonth() + 1}/${obj.date.getFullYear()} ${obj.date.toLocaleTimeString()}`;
+          return { ...obj, date: formattedDate };
+        } else {
+          return obj;
+        }
+      }); */
+      
+
+
+      res.render('crud', { data: filteredArray, tableName, count  });
     });
   });
   
